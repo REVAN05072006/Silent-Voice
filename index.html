@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Voice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: background-color 0.3s ease;
+        }
+        
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a6ee0;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #4a6ee0;
+        }
+        
+        .launch-btn {
+            background-color: #4a6ee0;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .launch-btn:hover {
+            background-color: #3a5bc7;
+        }
+        
+        #home {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+        
+        .home-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #home h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        #home p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        #about {
+            position: relative;
+            color: #fff;
+        }
+        
+        #about::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.cphrservices.in/assets/images/sba/aerial-view-business-team.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+        
+        #about::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+        
+        #contact {
+            position: relative;
+            color: #fff;
+        }
+        
+        #contact::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://unitedmedia.net/wp-content/uploads/2024/02/unitedmedia-contact.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+        
+        #contact::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+        
+        #try-it {
+            background-color: #f5f7fa;
+        }
+        
+        .demo-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            margin: 0 auto;
+            border: 2px solid #4a6ee0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        #canvasElement {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .results-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .status-value {
+            font-weight: bold;
+            color: #4a6ee0;
+        }
+        
+        .prediction-value {
+            font-weight: bold;
+        }
+        
+        .confidence-value {
+            font-weight: bold;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .controls button {
+            padding: 10px 20px;
+            background-color: #4a6ee0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .controls button:hover {
+            background-color: #3a5bc7;
+        }
+        
+        .controls button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: #4a6ee0;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3a5bc7;
+        }
+        
+        #launch-app {
+            background-color: #4a6ee0;
+            color: white;
+            text-align: center;
+        }
+        
+        #launch-app .section-title {
+            color: white;
+        }
+        
+        .app-download-btn {
+            display: inline-block;
+            background-color: white;
+            color: #4a6ee0;
+            padding: 15px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <nav>
+            <a href="#home" class="logo">MERAK CODERS</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#try-it">Try It Out</a>
+                <a href="#contact">Contact</a>
+                <a href="#launch-app" class="launch-btn">Launch App</a>
+            </div>
+        </nav>
+    </header>
+    
+    <section id="home">
+        <video autoplay muted loop class="video-background">
+            <source src="https://cdn.pixabay.com/video/2021/09/11/88207-602915574_tiny.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+        
+        <div class="home-content">
+            <h1>Welcome to Silent Voice</h1>
+            <p>From signs to voice, let all rejoice — breaking the silence, giving choice.</p>
+            <a href="#try-it" class="app-download-btn">Try It Now</a>
+        </div>
+    </section>
+    
+    <section id="about">
+        <div class="container">
+            <div>
+                <h2 class="section-title">About Us</h2>
+                <p>We are MERAK CODERS, a passionate team of four — VR Revan, Zara Ahamed, KS Tito Ishwar, and Shailesh Kumar N.</p>
+                <p>Our project, Silent Voice, breaks barriers by translating sign language into text and speech. Driven by innovation and inclusion, we aim to give a voice to every silent expression.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="try-it">
+        <div class="container">
+            <div>
+                <h2 class="section-title">Try It Out</h2>
+                <p>Experience real-time sign language translation with our interactive demo.</p>
+                
+                <div class="demo-container">
+                    <div class="camera-container">
+                        <video id="videoElement" autoplay playsinline></video>
+                        <canvas id="canvasElement"></canvas>
+                    </div>
+                    <div class="results-container">
+                        <div id="statusText">Status: <span class="status-value">Initializing...</span></div>
+                        <div id="predictionText">Sign: <span class="prediction-value">-</span></div>
+                        <div id="confidenceText">Confidence: <span class="confidence-value">0%</span></div>
+                        <div id="errorText" class="error-message"></div>
+                        <div class="controls">
+                            <button id="startBtn">Start Detection</button>
+                            <button id="stopBtn" disabled>Stop</button>
+                            <button id="captureBtn" disabled>Capture</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact">
+        <div class="container">
+            <div>
+                <h2 class="section-title">Contact Us</h2>
+                <p>Have questions or feedback? We'd love to hear from you.</p>
+                
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <section id="launch-app">
+        <div class="container">
+            <div>
+                <h2 class="section-title">Ready to Get Started?</h2>
+                <p>Download our app today and experience the future of productivity.</p>
+                <a href="#" class="app-download-btn">Download for iOS</a>
+                <a href="#" class="app-download-btn">Download for Android</a>
+                <a href="#" class="app-download-btn">Web Version</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection@2.0.0/dist/hand-pose-detection.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.min.js"></script>
+    <script>
+        // DOM Elements
+        const videoElement = document.getElementById('videoElement');
+        const canvasElement = document.getElementById('canvasElement');
+        const ctx = canvasElement.getContext('2d');
+        const statusValue = document.querySelector('#statusText .status-value');
+        const predictionValue = document.querySelector('#predictionText .prediction-value');
+        const confidenceValue = document.querySelector('#confidenceText .confidence-value');
+        const errorText = document.getElementById('errorText');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        
+        // App State
+        let isRunning = false;
+        let detector;
+        let animationId;
+        
+        // Initialize camera
+        async function initCamera() {
+            try {
+                statusValue.textContent = "Initializing camera...";
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: 640, 
+                        height: 480,
+                        facingMode: 'user' 
+                    } 
+                });
+                videoElement.srcObject = stream;
+                
+                await new Promise((resolve) => {
+                    videoElement.onloadedmetadata = () => {
+                        videoElement.play();
+                        canvasElement.width = videoElement.videoWidth;
+                        canvasElement.height = videoElement.videoHeight;
+                        statusValue.textContent = "Camera ready";
+                        resolve();
+                    };
+                });
+                
+                return true;
+            } catch (error) {
+                console.error('Camera error:', error);
+                statusValue.textContent = "Camera error";
+                errorText.textContent = 'Could not access the camera. Please ensure you have granted camera permissions.';
+                return false;
+            }
+        }
+        
+        // Initialize hand detector
+        async function initHandDetector() {
+            try {
+                statusValue.textContent = "Loading hand detection model...";
+                detector = await handPoseDetection.createDetector(
+                    handPoseDetection.SupportedModels.MediaPipeHands,
+                    {
+                        runtime: 'mediapipe',
+                        modelType: 'full',
+                        maxHands: 1,
+                        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/hands/'
+                    }
+                );
+                statusValue.textContent = "Model loaded";
+                return true;
+            } catch (error) {
+                console.error('Hand detector error:', error);
+                statusValue.textContent = "Model error";
+                errorText.textContent = 'Failed to load hand detection model. Please try again later.';
+                return false;
+            }
+        }
+        
+        // Process each frame
+        async function processFrame() {
+            if (!isRunning) return;
+            
+            try {
+                // Detect hands
+                const hands = await detector.estimateHands(videoElement);
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                
+                if (hands.length > 0) {
+                    const hand = hands[0];
+                    
+                    // Get bounding box
+                    const bbox = getBoundingBox(hand.keypoints);
+                    
+                    // Draw bounding box
+                    drawBoundingBox(bbox);
+                    
+                    // Process hand image and send to server
+                    await sendHandImageToServer(bbox);
+                    
+                    // Enable capture button
+                    captureBtn.disabled = false;
+                } else {
+                    predictionValue.textContent = '-';
+                    confidenceValue.textContent = '0%';
+                    captureBtn.disabled = true;
+                }
+                
+                // Continue processing
+                animationId = requestAnimationFrame(processFrame);
+            } catch (error) {
+                console.error('Frame processing error:', error);
+                errorText.textContent = 'Error processing frame. Please try again.';
+                stopDetection();
+            }
+        }
+        
+        // Helper functions
+        function getBoundingBox(keypoints) {
+            let minX = Infinity, minY = Infinity;
+            let maxX = -Infinity, maxY = -Infinity;
+            
+            for (const keypoint of keypoints) {
+                minX = Math.min(minX, keypoint.x);
+                minY = Math.min(minY, keypoint.y);
+                maxX = Math.max(maxX, keypoint.x);
+                maxY = Math.max(maxY, keypoint.y);
+            }
+            
+            // Add padding
+            const padding = 20;
+            minX = Math.max(0, minX - padding);
+            minY = Math.max(0, minY - padding);
+            maxX = Math.min(canvasElement.width, maxX + padding);
+            maxY = Math.min(canvasElement.height, maxY + padding);
+            
+            return {
+                x: minX,
+                y: minY,
+                width: maxX - minX,
+                height: maxY - minY
+            };
+        }
+        
+        function drawBoundingBox(bbox) {
+            ctx.strokeStyle = '#00FF00';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(bbox.x, bbox.y, bbox.width, bbox.height);
+        }
+        
+        async function sendHandImageToServer(bbox) {
+            try {
+                // Create a canvas for the hand image
+                const handCanvas = document.createElement('canvas');
+                handCanvas.width = bbox.width;
+                handCanvas.height = bbox.height;
+                const handCtx = handCanvas.getContext('2d');
+                
+                // Draw the hand region
+                handCtx.drawImage(
+                    videoElement,
+                    bbox.x, bbox.y, bbox.width, bbox.height,
+                    0, 0, bbox.width, bbox.height
+                );
+                
+                // Create white background (300x300)
+                const imgWhite = document.createElement('canvas');
+                imgWhite.width = 300;
+                imgWhite.height = 300;
+                const imgWhiteCtx = imgWhite.getContext('2d');
+                imgWhiteCtx.fillStyle = 'white';
+                imgWhiteCtx.fillRect(0, 0, 300, 300);
+                
+                // Calculate aspect ratio and resize
+                const aspectRatio = bbox.height / bbox.width;
+                
+                if (aspectRatio > 1) {
+                    const newWidth = Math.ceil(300 / bbox.height * bbox.width);
+                    const xOffset = Math.ceil((300 - newWidth) / 2);
+                    imgWhiteCtx.drawImage(
+                        handCanvas,
+                        0, 0, handCanvas.width, handCanvas.height,
+                        xOffset, 0, newWidth, 300
+                    );
+                } else {
+                    const newHeight = Math.ceil(300 / bbox.width * bbox.height);
+                    const yOffset = Math.ceil((300 - newHeight) / 2);
+                    imgWhiteCtx.drawImage(
+                        handCanvas,
+                        0, 0, handCanvas.width, handCanvas.height,
+                        0, yOffset, 300, newHeight
+                    );
+                }
+                
+                // Convert to blob and send to server
+                imgWhite.toBlob(async (blob) => {
+                    try {
+                        const formData = new FormData();
+                        formData.append('image', blob, 'hand.jpg');
+                        
+                        const response = await fetch('http://localhost:5000/predict', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.error) {
+                                errorText.textContent = result.error;
+                                predictionValue.textContent = '-';
+                                confidenceValue.textContent = '0%';
+                            } else {
+                                errorText.textContent = '';
+                                predictionValue.textContent = result.result;
+                                confidenceValue.textContent = `${Math.round((result.confidence || 0) * 100)}%`;
+                            }
+                        } else {
+                            const error = await response.text();
+                            errorText.textContent = `Server error: ${error}`;
+                            predictionValue.textContent = '-';
+                            confidenceValue.textContent = '0%';
+                        }
+                    } catch (error) {
+                        console.error('API call error:', error);
+                        errorText.textContent = 'Failed to connect to server. Please ensure the backend is running.';
+                        predictionValue.textContent = '-';
+                        confidenceValue.textContent = '0%';
+                    }
+                }, 'image/jpeg', 0.9);
+            } catch (error) {
+                console.error('Image processing error:', error);
+                errorText.textContent = 'Error processing hand image.';
+            }
+        }
+        
+        // Start detection
+        async function startDetection() {
+            if (isRunning) return;
+            
+            errorText.textContent = '';
+            
+            // Initialize camera and detector if not already done
+            if (!videoElement.srcObject) {
+                const cameraReady = await initCamera();
+                if (!cameraReady) {
+                    stopDetection();
+                    return;
+                }
+            }
+            
+            if (!detector) {
+                const detectorReady = await initHandDetector();
+                if (!detectorReady) {
+                    stopDetection();
+                    return;
+                }
+            }
+            
+            isRunning = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            captureBtn.disabled = true;
+            statusValue.textContent = "Detecting...";
+            predictionValue.textContent = '-';
+            confidenceValue.textContent = '0%';
+            
+            processFrame();
+        }
+        
+        // Stop detection
+        function stopDetection() {
+            isRunning = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            captureBtn.disabled = true;
+            statusValue.textContent = "Ready";
+            predictionValue.textContent = '-';
+            confidenceValue.textContent = '0%';
+        }
+        
+        // Capture image
+        function captureImage() {
+            alert('Capture functionality would go here');
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startDetection);
+        stopBtn.addEventListener('click', stopDetection);
+        captureBtn.addEventListener('click', captureImage);
+        
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            initCamera().catch(console.error);
+            
+            // Optional: Make navbar more opaque when scrolling
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('main-header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
